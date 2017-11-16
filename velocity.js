@@ -1,14 +1,11 @@
+/*!
+ * from https://codepen.io/sivan/pen/meBqYZ
+ * This is a pen forked from http://eighthdaydesign.com/journal/sprite-animation, I made it from GSAP to velocity.js. 
+ * 
+ * The velocity.js below is a modified version which fixed an animation-direction problem, make it works just like CSS animation-direction
+ */
+
 /*! VelocityJS.org (1.2.3). (C) 2014 Julian Shapiro. MIT @license: en.wikipedia.org/wiki/MIT_License */
-
-/*************************
-   Velocity jQuery Shim
-*************************/
-
-/*! VelocityJS.org jQuery Shim (1.0.1). (C) 2014 The jQuery Foundation. MIT @license: en.wikipedia.org/wiki/MIT_License. */
-
-/* This file contains the jQuery functions that Velocity relies on, thereby removing Velocity's dependency on a full copy of jQuery, and allowing it to work in any environment. */
-/* These shimmed functions are only used if jQuery isn't present. If both this shim and jQuery are loaded, Velocity defaults to jQuery proper. */
-/* Browser support: Using this shim instead of jQuery proper removes support for IE8. */
 
 ;(function (window) {
     /***************
@@ -3726,6 +3723,12 @@ return function (global, window, document, undefined) {
                         tweenContainer.endValue = 0;
                         tweenContainer.startValue = 100;
                     }
+                  
+                    if (opts.loopAlternate === false) {
+                      var temp = tweenContainer.endValue;
+                      tweenContainer.endValue = tweenContainer.startValue;
+                      tweenContainer.startValue = temp;
+                    }
                 });
 
                 Velocity(element, "reverse", { loop: true, delay: opts.delay });
@@ -3748,7 +3751,7 @@ return function (global, window, document, undefined) {
         ************************/
 
         /* Since this call is complete, set it to false so that the rAF tick skips it. This array is later compacted via compactSparseArray().
-          (For performance reasons, the call is set to false instead of being deleted from the array: http://www.html5rocks.com/en/tutorials/speed/v8/) */
+          (For performance reasons, the call is set to false instead of being deleted from the array: https://www.html5rocks.com/en/tutorials/speed/v8/) */
         Velocity.State.calls[callIndex] = false;
 
         /* Iterate through the calls array to determine if this was the final in-progress animation.
@@ -3884,3 +3887,4 @@ return function (global, window, document, undefined) {
 /* The CSS spec mandates that the translateX/Y/Z transforms are %-relative to the element itself -- not its parent.
 Velocity, however, doesn't make this distinction. Thus, converting to or from the % unit with these subproperties
 will produce an inaccurate conversion value. The same issue exists with the cx/cy attributes of SVG circles and ellipses. */
+
